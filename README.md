@@ -1,2 +1,2 @@
-# podman-yaml-collection
-This repository contains my collection of YAML files.
+# openwebui-podman
+Open-WebUIをpodmanで動かすためのYAML, Containerファイル、起動コマンド例などを置いています。
