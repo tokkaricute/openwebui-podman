@@ -1,0 +1,42 @@
+# Podman Kube Play file for Open-WebUI
+# 使用例
+# podman kube play ./filename.yaml
+# podman kube down ./filename.yaml
+# podman kube down --force ./file.yaml # ボリュームも削除 # エラーが発生したら、retry.
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: open-webui-kube
+spec:
+  containers:
+    - name: container
+      image: ghcr.io/open-webui/open-webui:main
+      ports:
+        - name: http
+          containerPort: 8080
+          hostPort: 3000
+      volumeMounts:
+        - mountPath: /app/backend/data
+          name: data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName:  open-webui-pvc
+  resources:
+    # Nvidia GPU support
+    # limits:
+    #   nvidia.com/gpu=all: 1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: open-webui-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

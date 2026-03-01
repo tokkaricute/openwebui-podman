@@ -1,0 +1,21 @@
+# コマンド例
+# podman-compose -f ./filename up -d  # ファイルを指定して起動
+# podman-compose -f ./filename down -v  # ボリューム削除と停止
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui-compose
+    
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      # ホスト上の Ollama を参照
+      OLLAMA_BASE_URL: "http://host.containers.internal:11434"
+    restart: unless-stopped
+
+volumes:
+  open-webui:
+    driver: local
